@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registro</title>
+	<?php require_once "scripts.php"; //conecta con las independencias?>
+</head>
+<body style="background-color: gray">
+<br><br><br>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4"></div>
+		<div class="col-sm-4">
+			<div class="panel panel-danger">
+				<div class="panel panel-heading">Registro de usuario</div>
+				<div class="panel panel-body">
+					<form id="frmRegistro">
+						<label>Nombre</label>
+						<input type="text" class="form-control input-sm" id="nombre" name="">
+						<label>Apellido</label>
+						<input type="text" class="form-control input-sm" id="apellido" name="">
+						<label>Usuario</label>
+						<input type="text" class="form-control input-sm" id="usuario" name="">
+						<label>Password</label>
+						<input type="text" class="form-control input-sm" id="password" name="">
+					
+						<label for="descripcion">Seleccionar rol</label>
+					
+						<select class="form-control form-control-sm" name="mi_tipo_usuario" id="mi_tipo_usuario">
+							<option value="0" selected>Seleccione:</option>    
+							<option value="1">Cliente</option>                  
+							<option value="2">Encargado</option>
+						</select>
+						
+					<p></p>
+
+                                        <h2>INGRESA</h2>
+                                       <a href="file:///C:/Users/PC/Downloads/kala/ACTIVAS.html" class="btn btn-default">OK</a>
+                                        </form>
+					
+					
+					<div style="text-align: right;">
+						<a href="file:///C:/Users/PC/Downloads/kala/index.html" class="btn btn-default">INICIO</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#registrarNuevo').click(function(){	//estructura para el click, donde valida los datos
+
+			if($('#nombre').val()==""){
+				alertify.alert("Debes agregar el nombre");
+				return false;
+			}
+			else if($('#apellido').val()==""){
+				alertify.alert("Debes agregar el apellido");
+				return false;
+			}
+			else if($('#usuario').val()==""){
+				alertify.alert("Debes agregar el usuario");
+				return false;
+			}
+			else if($('#password').val()==""){
+				alertify.alert("Debes agregar el password");
+				return false;
+			}
+			else if($('#mi_tipo_usuario').val()==0 || $('#mi_tipo_usuario').val()==""){
+				alertify.alert("Debes Seleccionar tipo de Usuario");
+				return false;
+			}
+			cadena="nombre=" + $('#nombre').val() +
+					"&apellido=" + $('#apellido').val() +
+					"&usuario=" + $('#usuario').val() + 
+					"&mi_tipo_usuario=" + $('#mi_tipo_usuario').val() + 
+					"&password=" + $('#password').val();
+			console.log(cadena);
+			$.ajax({
+				type:"POST",
+				url:"php/registro.php",
+				data:cadena,
+				success:function(r){
+
+					if(r==2){
+						alertify.alert("Este usuario ya existe, prueba con otro :");
+					}
+					else if(r==1){
+						$('#frmRegistro')[0].reset(); // este nos ayuda a registrar solo un usario unico 
+						alertify.success("Agregado con exito");
+					}else{
+						alertify.error("Fallo al agregar");
+					}
+				}
+			});
+		});
+	});
+</script>
